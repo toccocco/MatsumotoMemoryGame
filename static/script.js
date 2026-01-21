@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             startGame();
         }
     });
+    toggleResetButton(true);
 });
 
 function showScreen(screenId) {
@@ -106,6 +107,7 @@ function initMemoryGame(statusMessage = 'カードをめくってペアを見つ
     renderMemoryBoard();
     updateMemoryDisplay();
     setStatus(statusMessage);
+    toggleResetButton(false);
 }
 
 function renderMemoryBoard() {
@@ -321,6 +323,7 @@ function resetToStart() {
         rankingEl.innerHTML = '';
     }
     showScreen('start-screen');
+    toggleResetButton(true);
 }
 
 function resetGameInProgress() {
@@ -328,9 +331,7 @@ function resetGameInProgress() {
         return;
     }
 
-    setStatus('ゲームをリセット中...');
-    shuffleDeck();
-    initMemoryGame();
+    setStatus('現在のゲームが進行中なので、リセットはできません。');
 }
 
 function restartFromResults() {
@@ -343,6 +344,7 @@ function restartFromResults() {
     shuffleDeck();
     initMemoryGame();
     showScreen('game-screen');
+    toggleResetButton(false);
 }
 
 async function loadTodayRanking() {
@@ -390,4 +392,14 @@ function renderRankingList(ranking) {
     `);
 
     container.innerHTML = items.join('');
+}
+function toggleResetButton(enable) {
+    const btn = document.getElementById('reset-game-btn');
+    if (!btn) return;
+    btn.disabled = !enable;
+    if (!enable) {
+        btn.setAttribute('title', '現在のゲーム中はリセットできません');
+    } else {
+        btn.setAttribute('title', '');
+    }
 }
