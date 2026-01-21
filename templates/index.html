@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☠️松本神経衰弱☠️</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☠️松本神経衰弱☠️</h1>
+            <p>写真を記憶してペアを狙おう！</p>
+        </header>
+
+        <main id="memory-game-area">
+            <section id="start-screen" class="screen">
+                <h2>プレイヤー登録</h2>
+                <div class="player-input-section">
+                    <p>名前を入力して、準備が整ったら「スタート」を押してください。</p>
+                    <div class="player-input-group">
+                        <input type="text" id="player-name-input" placeholder="名前を入力してください" autocomplete="off">
+                        <button class="btn btn-primary" id="start-game-btn">スタート</button>
+                    </div>
+                    <p class="hint">Enter キーでもスタートできます</p>
+                </div>
+                    <div class="intro">
+                        <p>同じ写真を見つけたらペア成立！ミスは2回まで、3回目でゲームオーバーになります。</p>
+                    </div>
+                </section>
+
+            <section id="game-screen" class="screen hidden">
+                <div class="game-header">
+                    <div class="round-info">
+                        <span id="memory-info">試行: 0 | ミス: 0/2</span>
+                        <span id="memory-score">スコア: <strong id="current-score">0</strong></span>
+                    </div>
+                    <p id="status-message" class="status-message"></p>
+                </div>
+
+                <div class="game-content">
+                    <h3>ペアを見つけよう！</h3>
+                    <div class="memory-board" id="memory-board"></div>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-secondary" id="reset-game-btn">リセット</button>
+                </div>
+            </section>
+
+            <section id="result-screen" class="screen hidden">
+                <h2>ゲーム終了！</h2>
+                <div class="final-scores">
+                    <div id="final-scores-content"></div>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" id="restart-btn">もう一度遊ぶ</button>
+                    <button class="btn btn-secondary" id="return-btn">はじめから</button>
+                </div>
+                <div class="ranking-panel">
+                    <h3>今日のランキング</h3>
+                    <div id="ranking-content"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

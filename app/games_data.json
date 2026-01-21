@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "filename": "drink_01.jpg",
+    "name": "ビール",
+    "difficulty": "easy"
+  },
+  {
+    "id": 2,
+    "filename": "drink_02.jpg",
+    "name": "ワイン",
+    "difficulty": "medium"
+  },
+  {
+    "id": 3,
+    "filename": "drink_03.jpg",
+    "name": "ウイスキー",
+    "difficulty": "hard"
+  },
+  {
+    "id": 4,
+    "filename": "drink_01.png",
+    "name": "シャンパン",
+    "difficulty": "medium"
+  }
+]

@@ -1,0 +1,265 @@
+[
+  {
+    "timestamp": "2026-01-21T01:35:08.802381",
+    "game_type": "memory_game",
+    "players": [
+      "ちゃんぽん"
+    ],
+    "scores": {
+      "ちゃんぽん": 128
+    },
+    "winner": "ちゃんぽん"
+  },
+  {
+    "timestamp": "2026-01-21T01:54:27.131988",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 26
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T01:54:56.367059",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 26
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T14:18:52.359180",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "ちゃんぽん"
+    ],
+    "scores": {
+      "ちゃんぽん": 26
+    },
+    "winner": "ちゃんぽん"
+  },
+  {
+    "timestamp": "2026-01-21T14:20:17.417673",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 34
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T14:20:31.843555",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 34
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T14:20:40.375405",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 34
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T14:22:05.402949",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 26
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T14:29:22.165321",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "チャンポン"
+    ],
+    "scores": {
+      "チャンポン": 0
+    },
+    "winner": "チャンポン"
+  },
+  {
+    "timestamp": "2026-01-21T14:35:03.824965",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "徳植"
+    ],
+    "scores": {
+      "徳植": 10
+    },
+    "winner": "徳植"
+  },
+  {
+    "timestamp": "2026-01-21T14:58:09.693948",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 0
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T14:58:18.036678",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 0
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T14:58:23.958123",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 0
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T14:58:30.954693",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 0
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T16:49:36.175747",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 50
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T17:04:35.903540",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 10
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T17:11:21.219444",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 0
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T17:11:27.950328",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 0
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T17:11:34.436108",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 0
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T17:11:40.687029",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 0
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T17:11:47.824432",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 0
+    },
+    "winner": "とくこ"
+  },
+  {
+    "timestamp": "2026-01-21T17:30:48.578143",
+    "date": "2026-01-21",
+    "game_type": "memory_game",
+    "players": [
+      "とくこ"
+    ],
+    "scores": {
+      "とくこ": 20
+    },
+    "winner": "とくこ"
+  }
+]
