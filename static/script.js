@@ -181,6 +181,10 @@ async function checkMemoryMatch() {
 
     setStatus('カードを確認中...');
 
+    await waitForCardImageLoad(idx1);
+    await waitForCardImageLoad(idx2);
+    await delay(250);
+
     try {
         const response = await fetch('/api/game/memory-game/check-match', {
             method: 'POST',
@@ -222,8 +226,8 @@ async function checkMemoryMatch() {
         renderMemoryBoard();
         updateMemoryDisplay();
 
-        if (memoryGameState.mistakes >= 2) {
-            setStatus('ミスが2回に達したのでゲームオーバーです。');
+        if (memoryGameState.mistakes >= 3) {
+            setStatus('ミスが3回に達したのでゲームオーバーです。');
             await endMemoryGame();
             return;
         }
@@ -402,4 +406,32 @@ function toggleResetButton(enable) {
     } else {
         btn.setAttribute('title', '');
     }
+}
+
+function waitForCardImageLoad(cardIndex) {
+    return new Promise(resolve => {
+        const img = document.querySelector(`.memory-card[data-idx="${cardIndex}"] img`);
+        if (!img) {
+            resolve();
+            return;
+        }
+
+        if (img.complete) {
+            resolve();
+            return;
+        }
+
+        const done = () => {
+            img.removeEventListener('load', done);
+            img.removeEventListener('error', done);
+            resolve();
+        };
+
+        img.addEventListener('load', done, { once: true });
+        img.addEventListener('error', done, { once: true });
+    });
+}
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
