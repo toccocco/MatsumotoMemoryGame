@@ -490,9 +490,6 @@ main {
         text-align: center;
     }
 
-    .memory-board {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
 }
 
 /* ========== 神経衰弱ゲーム スタイル ========== */
@@ -501,6 +498,7 @@ main {
     gap: 10px;
     margin: 20px 0;
     max-width: 600px;
+    grid-template-columns: repeat(4, minmax(70px, 1fr));
 }
 
 .memory-card {

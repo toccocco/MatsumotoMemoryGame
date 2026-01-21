@@ -245,7 +245,7 @@ async function checkMemoryMatch() {
 function updateMemoryDisplay() {
     const attemptsEl = document.getElementById('memory-info');
     if (attemptsEl) {
-        attemptsEl.textContent = `試行: ${memoryGameState.attempts} | ミス: ${memoryGameState.mistakes}/2`;
+        attemptsEl.textContent = `試行: ${memoryGameState.attempts} | ミス: ${memoryGameState.mistakes}/3`;
     }
 
     const scoreEl = document.getElementById('current-score');
