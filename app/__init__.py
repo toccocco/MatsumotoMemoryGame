@@ -12,5 +12,7 @@ def create_app():
     
     from . import routes
     app.register_blueprint(routes.bp)
-    
+    app.secret_key = os.environ.get('FLASK_SECRET', 'dev-secret')
+
     return app
+

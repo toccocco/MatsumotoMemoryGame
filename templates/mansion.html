@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>違和感は、まだ言葉にならない</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="mansion-room">
+    <div class="mansion-shell">
+        <header class="mansion-header">
+            <h1>違和感は、まだ言葉にならない</h1>
+            <div class="quote-line">
+                <p id="line-text" class="mansion-line">今夜は松本さんとお食事。高級料理、高級ワイン。出てくるお酒は8杯。でも、何かがおかしい。違和感があれば、右。なければ、左。ミスは3回まで。</p>
+            </div>
+            <div class="mansion-indicators">
+                <div class="indicator">
+                    <span class="indicator-label">杯数</span>
+                    <strong id="cup-counter">0 / 8</strong>
+                </div>
+                <div class="indicator">
+                    <span class="indicator-label">ストライク</span>
+                    <strong id="strike-counter">0 / 3</strong>
+                </div>
+            </div>
+        </header>
+
+        <div id="debug-panel" class="debug-panel hidden">
+            <span class="debug-item">ターン: <strong id="debug-turn">0</strong></span>
+            <span class="debug-item">違和感: <strong id="debug-anomaly">OFF</strong></span>
+            <span class="debug-item">タイプ: <strong id="debug-type">-</strong></span>
+            <span class="debug-note">(debug=1 で表示)</span>
+        </div>
+
+        <main class="mansion-main">
+            <div class="mansion-view">
+                <img src="{{ url_for('static', filename='images/matsumoto_room_base.jpg') }}" alt="松本の部屋" class="mansion-photo">
+                <div id="anomaly-overlay" class="mansion-overlay overlay-soft-warm"></div>
+                <div id="flash-overlay" class="flash-overlay hidden"></div>
+                <div id="game-over-overlay" class="game-over-overlay hidden">
+                    <div class="game-over-content">
+                        <img src="{{ url_for('static', filename='images/matsumoto_room_gameover.jpg') }}" alt="ゲームオーバー時の松本">
+                        <p>お前ええ加減にせえよ</p>
+                    </div>
+                </div>
+                <div class="glass-trigger glass-left" data-direction="left" aria-label="違和感なし">
+                    <img src="{{ url_for('static', filename='images/matsumoto_room_wineglass.png') }}" alt="ワイングラス">
+                </div>
+                <div class="glass-trigger glass-right" data-direction="right" aria-label="違和感あり">
+                    <img src="{{ url_for('static', filename='images/matsumoto_room_wineglass.png') }}" alt="ワイングラス">
+                </div>
+            </div>
+
+            <div class="status-panel">
+                <p id="status-message">違和感を感じたら右のグラスを、普通なら左のグラスを。ゆっくり飲んで判断しよう。</p>
+                <div class="glasses-prompt">
+                    <span class="glass-label">左：違和感なし</span>
+                    <span class="glass-label">右：違和感あり</span>
+                </div>
+            </div>
+        </main>
+
+        <button id="back-to-start" class="mansion-link-btn bottom-btn">はじめに戻る</button>
+
+        <div id="start-overlay" class="start-overlay">
+            <div class="start-panel">
+                <p>松本と同じテーブルで8杯の違和感を見抜こう。正解すれば関係性が深まる。ミスは3回まで。</p>
+                <button id="start-game-btn" class="start-btn">はじめる</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='mansion.js') }}"></script>
+</body>
+</html>

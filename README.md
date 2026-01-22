@@ -12,10 +12,10 @@
 
 ```bash
 # 依存パッケージのインストール
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 
 # アプリケーション起動
-python run.py
+python3 run.py
 ```
 
 ### アクセス方法
@@ -27,16 +27,17 @@ python run.py
 .
 ├── app/
 │   ├── __init__.py      # Flask アプリ初期化
-│   ├── routes.py        # ルート定義
+│   ├── routes.py        # ルート定義（神経衰弱＋松本屋敷）
 │   ├── game_manager.py  # ゲームロジック
-│   └── games_data.json  # ゲームデータ
+│   └── games_data.json  # お酒データ
 ├── static/
-│   ├── images/          # お酒の写真
+│   ├── images/          # ゲーム用画像（お酒＋松本）
 │   ├── style.css        # スタイルシート
-│   └── script.js        # フロントエンド JavaScript
+│   ├── script.js        # 神経衰弱用スクリプト
+│   └── mansion.js       # 松本屋敷用スクリプト
 ├── templates/
-│   └── index.html       # メインページ
-├── extract_drinks.py    # お酒写真自動抽出スクリプト
+│   ├── index.html       # 神経衰弱トップページ
+│   └── mansion.html     # 松本屋敷チャレンジ
 ├── run.py               # エントリーポイント
 └── requirements.txt     # Python 依存パッケージ
 ```
@@ -90,3 +91,9 @@ python extract_drinks.py \
 - 最大10ラウンド
 - リアルタイムスコア表示
 - 4～5人対応
+
+### 🎭 松本版８番出口〜松本家への招待〜
+Matsumoto Mansion シリーズの迷路風イベント。
+- 正解の写真と違和感のある写真を見分けて左／右の扉を選ぶ
+- 5回ミスでゲームオーバー（3回戻されると松本に怒られる）
+- 毎ターンサーバー側で状態を維持し、視覚的には写真だけを見せる

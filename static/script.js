@@ -2,6 +2,96 @@ let gameState = null;
 let playerName = '';
 let memoryGameState = null;
 
+const NETWORK_DEFAULTS = {
+    retries: 2,
+    timeoutMs: 12000,
+    retryDelayMs: 800
+};
+
+function getCardImageUrl(imageName) {
+    return `/static/images/${imageName}`;
+}
+
+// --- network helpers: timeout + retry ---
+async function fetchWithTimeout(url, options = {}, timeoutMs = NETWORK_DEFAULTS.timeoutMs) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+        return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+        clearTimeout(id);
+    }
+}
+
+async function fetchWithRetry(url, options = {}, {
+    retries = NETWORK_DEFAULTS.retries,
+    timeoutMs = NETWORK_DEFAULTS.timeoutMs,
+    retryDelayMs = NETWORK_DEFAULTS.retryDelayMs
+} = {}) {
+    let lastErr = null;
+
+    for (let attempt = 0; attempt <= retries; attempt++) {
+        try {
+            const res = await fetchWithTimeout(url, options, timeoutMs);
+            if (!res.ok && res.status >= 500 && attempt < retries) {
+                await delay(retryDelayMs);
+                continue;
+            }
+            return res;
+        } catch (err) {
+            lastErr = err;
+            if (attempt < retries) {
+                await delay(retryDelayMs);
+                continue;
+            }
+            throw err;
+        }
+    }
+
+    throw lastErr || new Error('Network error');
+}
+
+async function preloadImage(url) {
+    return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+    });
+}
+
+async function preloadCardImages(cards) {
+    if (!Array.isArray(cards)) {
+        return [];
+    }
+
+    const uniqueImages = Array.from(new Set(
+        cards
+            .map(card => card?.image)
+            .filter(Boolean)
+    ));
+
+    const results = await Promise.allSettled(
+        uniqueImages.map(image => preloadImage(getCardImageUrl(image)))
+    );
+
+    const failures = results.filter(result => {
+        if (result.status === 'rejected') {
+            return true;
+        }
+        if (result.status === 'fulfilled' && result.value === false) {
+            return true;
+        }
+        return false;
+    });
+    if (failures.length > 0) {
+        console.warn('一部カード画像の読み込みに失敗しました。', failures.length);
+    }
+
+    return results;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start-game-btn')?.addEventListener('click', () => startGame());
     document.getElementById('reset-game-btn')?.addEventListener('click', () => resetGameInProgress());
@@ -37,17 +127,19 @@ async function startGame(overrideName) {
     setStatus('ゲームを準備中...');
 
     try {
-        const response = await fetch('/api/game/memory-game/start', {
+        const response = await fetchWithRetry('/api/game/memory-game/start', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ player_name: playerName })
-        });
+        }, { retries: 2, timeoutMs: 15000, retryDelayMs: 900 });
 
         if (!response.ok) {
             throw new Error('サーバーエラー');
         }
 
         gameState = await response.json();
+        setStatus('カード画像を読み込み中...');
+        await preloadCardImages(gameState.cards);
         const invalidCards = validateCards(gameState.cards);
         let startStatus = undefined;
         if (invalidCards.length > 0) {
@@ -124,12 +216,14 @@ function renderMemoryBoard() {
         cardEl.className = 'memory-card';
         cardEl.dataset.idx = idx;
 
+        const imageUrl = getCardImageUrl(card.image);
+
         if (memoryGameState.matched.includes(idx)) {
             cardEl.classList.add('matched');
-            cardEl.innerHTML = `<img src="/static/images/${card.image}" alt="photo">`;
+            cardEl.innerHTML = `<img src="${imageUrl}" alt="photo">`;
         } else if (memoryGameState.flipped.includes(idx)) {
             cardEl.classList.add('flipped');
-            cardEl.innerHTML = `<img src="/static/images/${card.image}" alt="photo">`;
+            cardEl.innerHTML = `<img src="${imageUrl}" alt="photo">`;
         } else {
             cardEl.textContent = '🎴';
         }
@@ -186,7 +280,7 @@ async function checkMemoryMatch() {
     await delay(250);
 
     try {
-        const response = await fetch('/api/game/memory-game/check-match', {
+        const response = await fetchWithRetry('/api/game/memory-game/check-match', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -197,7 +291,11 @@ async function checkMemoryMatch() {
                 card1_image: card1.image,
                 card2_image: card2.image
             })
-        });
+        }, { retries: 2, timeoutMs: 12000, retryDelayMs: 800 });
+
+        if (!response.ok) {
+            throw new Error('マッチ判定に失敗しました');
+        }
 
         const result = await response.json();
 
@@ -238,7 +336,7 @@ async function checkMemoryMatch() {
     } catch (error) {
         console.error('マッチ確認エラー:', error);
         memoryGameState.locked = false;
-        setStatus('通信エラーが発生しました。');
+        setStatus('通信が不安定です。もう一度カードをめくってください。');
     }
 }
 
@@ -272,7 +370,7 @@ async function endMemoryGame() {
     setStatus('スコアを保存しています...');
 
     try {
-        const response = await fetch('/api/game/memory-game/finish', {
+        const response = await fetchWithRetry('/api/game/memory-game/finish', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -283,11 +381,16 @@ async function endMemoryGame() {
                 pairs_matched: memoryGameState.pairsMatched,
                 special_bonus: memoryGameState.specialBonus
             })
-        });
+        }, { retries: 2, timeoutMs: 12000, retryDelayMs: 800 });
+
+        if (!response.ok) {
+            throw new Error('スコア保存に失敗しました');
+        }
 
         await response.json();
     } catch (error) {
         console.error('スコア保存エラー:', error);
+        setStatus('通信が不安定です。スコア保存に失敗しました。');
     }
 
     displayFinalScores();
@@ -360,7 +463,7 @@ async function loadTodayRanking() {
     container.innerHTML = '<p>ランキングを読み込み中...</p>';
 
     try {
-        const response = await fetch('/api/ranking');
+        const response = await fetchWithRetry('/api/ranking', {}, { retries: 2, timeoutMs: 12000, retryDelayMs: 800 });
         if (!response.ok) {
             throw new Error('ランキング取得失敗');
         }
@@ -369,7 +472,7 @@ async function loadTodayRanking() {
         renderRankingList(ranking);
     } catch (error) {
         console.error('ランキング取得エラー:', error);
-        container.innerHTML = '<p>ランキングの読み込みに失敗しました。</p>';
+        container.innerHTML = '<p>ランキングの読み込みに失敗しました。通信環境を確認してください。</p>';
     }
 }
 
