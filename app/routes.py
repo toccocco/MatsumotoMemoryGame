@@ -2,7 +2,7 @@ import os
 import random
 from pathlib import Path
 
-from flask import Blueprint, render_template, jsonify, request, session
+from flask import Blueprint, render_template, jsonify, request, session, redirect, url_for
 
 from .game_manager import GameManager
 from .score_manager import ScoreManager
@@ -99,7 +99,7 @@ def _next_turn_payload():
 
 @bp.route('/')
 def index():
-    return render_template('index.html')
+    return redirect(url_for('main.mansion_game'))
 
 
 @bp.route('/mansion')
