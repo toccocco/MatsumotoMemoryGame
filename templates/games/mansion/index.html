@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>違和感は、まだ言葉にならない</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/shared.css') }}">
 </head>
 <body class="mansion-room">
     <div class="mansion-shell">
@@ -60,7 +60,7 @@
             </div>
         </main>
 
-        <button id="back-to-start" class="mansion-link-btn bottom-btn">はじめに戻る</button>
+        <button id="back-to-start" data-home-url="{{ url_for('main.index') }}" class="mansion-link-btn bottom-btn">はじめに戻る</button>
 
         <div id="start-overlay" class="start-overlay">
             <div class="start-panel">
@@ -70,6 +70,6 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='mansion.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/mansion.js') }}"></script>
 </body>
 </html>

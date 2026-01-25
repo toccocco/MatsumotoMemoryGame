@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cutie Drinking Game Library</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/shared.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cutie Drinking Game Library</h1>
+            <p>一杯ずつ違う雰囲気のゲームを楽しもう。遊びたいゲームを選んでください。</p>
+        </header>
+
+        <main>
+            <section class="game-list">
+                {% for game in games %}
+                <article class="game-card">
+                    <div class="game-card-icon">{{ game.icon }}</div>
+                    <h3>{{ game.name }}</h3>
+                    <p>{{ game.description }}</p>
+                    <div class="button-group">
+                        <a class="btn btn-primary" href="{{ url_for('main.game_page', slug=game.slug) }}">遊ぶ</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>

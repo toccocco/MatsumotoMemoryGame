@@ -1,14 +1,14 @@
 # 可愛いお酒の会 - ミニゲーム集
 
-4〜5人で遊べるお酒の会向けミニゲームアプリケーション
+4〜5人で遊べる、お酒の会のための Flask ベースのミニゲーム集です。
 
 ## セットアップ
 
 ### 必要なもの
-- Python 3.8以上
+- Python 3.8 以上
 - pip
 
-### インストール
+### インストールと起動（ローカル）
 
 ```bash
 # 依存パッケージのインストール
@@ -19,7 +19,7 @@ python3 run.py
 ```
 
 ### アクセス方法
-ブラウザで `http://localhost:5000` にアクセス
+ブラウザで `http://localhost:5000` にアクセスしてください。
 
 ## プロジェクト構成
 
@@ -27,40 +27,45 @@ python3 run.py
 .
 ├── app/
 │   ├── __init__.py      # Flask アプリ初期化
-│   ├── routes.py        # ルート定義（神経衰弱＋松本屋敷）
+│   ├── routes.py        # ルート定義（ゲーム一覧＋API）
 │   ├── game_manager.py  # ゲームロジック
-│   └── games_data.json  # お酒データ
+│   ├── games_data.json  # お酒データ
+│   └── data/
+│       └── scores.json  # スコア記録（ScoreManager が書き込む）
 ├── static/
-│   ├── images/          # ゲーム用画像（お酒＋松本）
-│   ├── style.css        # スタイルシート
-│   ├── script.js        # 神経衰弱用スクリプト
-│   └── mansion.js       # 松本屋敷用スクリプト
+│   ├── assets/
+│   │   ├── css/
+│   │   │   └── shared.css        # ゲーム共通スタイル
+│   │   └── js/
+│   │       ├── memory.js         # 神経衰弱用スクリプト
+│   │       └── mansion.js        # 松本屋敷用スクリプト
+│   └── images/                   # ゲーム用画像（お酒＋松本）
 ├── templates/
-│   ├── index.html       # 神経衰弱トップページ
-│   └── mansion.html     # 松本屋敷チャレンジ
-├── run.py               # エントリーポイント
-└── requirements.txt     # Python 依存パッケージ
+│   └── games/
+│       ├── list.html            # ゲーム一覧ページ
+│       ├── memory/
+│       │   └── index.html       # 神経衰弱ページ
+│       └── mansion/
+│           └── index.html       # 松本屋敷ページ
+├── run.py                        # エントリーポイント（`app` 変数を公開）
+└── requirements.txt              # Python 依存パッケージ
 ```
 
-## お酒の写真自動抽出
+## お酒の写真自動抽出（任意機能）
 
 ### 概要
-写真フォルダから自動的にお酒が写っている画像を検出・抽出します。
+指定フォルダの画像から「お酒らしさ」を持つ写真を抽出する補助ツールです。
+
+### 注意（重要）
+- 個人の写真フォルダを走査するため、実行前に対象フォルダとアクセス権限を必ず確認してください。
+- 抽出結果には誤判定が含まれる可能性が高いため、すべて手動で確認・削除したうえで利用してください。
+- モデルの精度や挙動は環境・写真の条件に左右されやすく、未検証の数値は記載していません。
 
 ### 使用方法
 
-**基本的な使い方（~/Pictures から自動抽出）：**
 ```bash
 python extract_drinks.py
-```
-
-**カスタムフォルダから抽出：**
-```bash
 python extract_drinks.py --source /path/to/your/photos
-```
-
-**詳細オプション：**
-```bash
 python extract_drinks.py \
   --source ~/Pictures \
   --output ./static/images \
@@ -71,29 +76,37 @@ python extract_drinks.py \
 ### オプション
 - `--source`: スキャンするフォルダのパス（デフォルト: ~/Pictures）
 - `--output`: 出力先フォルダ（デフォルト: ./static/images）
-- `--threshold`: お酒と判定する信頼度閾値（0-1、デフォルト: 0.3）
+- `--threshold`: 判定の閾値（0-1、デフォルト: 0.3）
 - `--max`: 抽出する最大画像数（デフォルト: 20）
 
-### 仕組み
-- ImageNetで事前学習されたResNet50を使用
-- 画像内の物体を認識し、お酒関連キーワードで判定
-- 認識精度：約80-90%（クリアボトル、ラベル等のお酒固有の特徴で判定）
+## GitHub への push 手順（事故リスクを下げるバージョン）
 
-### 注意点
-- 処理時間：1枚あたり1-2秒程度
-- GPU対応環境なら大幅に高速化
-- 完全な自動抽出のため、手動で確認・削除推奨
+1. `git status` で差分を確認し、意図しないファイルが混ざっていないかを把握。
+2. 必要なファイルだけをステージング（例: `git add README.md templates/ static/assets/` あるいは `git add -p`）。
+3. `git diff --cached` でステージ済み差分を確認。
+4. `git commit -m "Reorganize shared assets"` のような説明的なメッセージでコミット。
+5. `git push origin mansion-redesign`（ブランチ名は作業中のもの）でリモートに送る。
+
+## Render へのデプロイ（WSGI 設定を再確認）
+
+1. GitHub と Render を連携して Web Service を作成。
+2. Build Command: `pip install -r requirements.txt`
+3. Start Command: `gunicorn run:app`
+   - `run.py` ではモジュールスコープで `app = create_app()` を公開しているため、このコマンドで動作します。
+   - `create_app()` を直接呼び出す構成に変えた場合は `gunicorn app:create_app()` などに調整してください。
+4. 環境変数 `FLASK_SECRET` を設定してセッション署名を保護（`app/__init__.py` 参照）。
+5. デプロイ後、ブラウザの DevTools で `/static/assets/...` へ 404 が出ていないかを確認。
 
 ## ゲーム一覧
 
 ### 🍷 お酒当てクイズ
-お酒の写真を見て、何のお酒かを当てるゲーム。
+お酒の写真を見て、「何のお酒か？」を当てるゲーム。
 - 最大10ラウンド
 - リアルタイムスコア表示
-- 4～5人対応
+- 4〜5人対応
 
 ### 🎭 松本版８番出口〜松本家への招待〜
 Matsumoto Mansion シリーズの迷路風イベント。
 - 正解の写真と違和感のある写真を見分けて左／右の扉を選ぶ
-- 5回ミスでゲームオーバー（3回戻されると松本に怒られる）
-- 毎ターンサーバー側で状態を維持し、視覚的には写真だけを見せる
+- ミス3回でゲームオーバー（松本が怒る）
+- サーバー側で状態を保持するため、視覚的には写真だけが変化します

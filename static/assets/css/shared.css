@@ -104,6 +104,11 @@ main {
     background: #f9f9f9;
 }
 
+.game-card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
 .game-card:hover {
     background: #667eea;
     color: white;

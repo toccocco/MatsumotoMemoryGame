@@ -12,6 +12,8 @@ const debugTurn = document.getElementById('debug-turn');
 const debugAnomaly = document.getElementById('debug-anomaly');
 const debugType = document.getElementById('debug-type');
 const debugMode = new URLSearchParams(window.location.search).get('debug') === '1';
+const backToStartButton = document.getElementById('back-to-start');
+const backHomeUrl = backToStartButton?.dataset.homeUrl;
 
 let cupsTotal = 8;
 let finalLineTimeout = null;
@@ -178,7 +180,11 @@ document.addEventListener('DOMContentLoaded', () => {
         startGame();
     });
 
-    document.getElementById('back-to-start')?.addEventListener('click', () => {
+    backToStartButton?.addEventListener('click', () => {
+        if (backHomeUrl) {
+            window.location.href = backHomeUrl;
+            return;
+        }
         window.location.reload();
     });
 

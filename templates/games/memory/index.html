@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>☠️松本神経衰弱☠️</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/shared.css') }}">
 </head>
 <body>
     <div class="container">
@@ -12,6 +12,9 @@
             <h1>☠️松本神経衰弱☠️</h1>
             <p>写真を記憶してペアを狙おう！</p>
         </header>
+        <div class="button-group top-link">
+            <a class="btn btn-secondary" href="{{ url_for('main.index') }}">ゲーム一覧に戻る</a>
+        </div>
 
         <main id="memory-game-area">
             <section id="start-screen" class="screen">
@@ -64,6 +67,6 @@
         </main>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/memory.js') }}"></script>
 </body>
 </html>
