@@ -2,7 +2,7 @@ import os
 import random
 from pathlib import Path
 
-from flask import Blueprint, render_template, jsonify, request, session, redirect, url_for
+from flask import Blueprint, render_template, jsonify, request, session, redirect, url_for, abort
 
 from .game_manager import GameManager
 from .score_manager import ScoreManager
@@ -45,6 +45,24 @@ LINE_ANOMALY_HINTS = {
 
 GAME_OVER_LINE = 'お前ええ加減にせえよ'
 
+
+GAME_CATALOG = [
+    {
+        'slug': 'memory',
+        'name': '神経衰弱ゲーム',
+        'description': 'ペアを見つけてスコアを稼ごう。記憶力を試してみてください。',
+        'icon': '🃏',
+        'template': 'games/memory/index.html'
+    },
+    {
+        'slug': 'mansion',
+        'name': '松本の違和感チェック',
+        'description': '8杯の違和感を見抜いて、松本の審判をクリアしよう。',
+        'icon': '🍷',
+        'template': 'games/mansion/index.html'
+    }
+]
+GAME_PAGE_MAP = {entry['slug']: entry for entry in GAME_CATALOG}
 
 def _choose_overlay_type(idx, anomaly):
     if not anomaly:
@@ -99,19 +117,38 @@ def _next_turn_payload():
 
 @bp.route('/')
 def index():
-    return redirect(url_for('main.mansion_game'))
+    return render_template('games/list.html', games=GAME_CATALOG)
+
+
+@bp.route('/games/<slug>')
+def game_page(slug):
+    game = GAME_PAGE_MAP.get(slug)
+    if not game:
+        abort(404)
+    return render_template(game['template'])
 
 
 @bp.route('/mansion')
 def mansion_game():
-    return render_template('mansion.html')
+    return redirect(url_for('main.game_page', slug='mansion'))
+
+
+@bp.route('/memory')
+def memory_game_redirect():
+    return redirect(url_for('main.game_page', slug='memory'))
 
 
 @bp.route('/api/games')
 def get_games():
-    games = [
-        {'id': 'memory-game', 'name': '🎮 神経衰弱ゲーム', 'description': 'ペアを見つけてスコアを稼ごう！'},
-    ]
+    games = []
+    for entry in GAME_CATALOG:
+        games.append({
+            'id': f'{entry["slug"]}-game',
+            'name': entry['name'],
+            'description': entry['description'],
+            'slug': entry['slug'],
+            'path': url_for('main.game_page', slug=entry['slug'])
+        })
     return jsonify(games)
 
 
